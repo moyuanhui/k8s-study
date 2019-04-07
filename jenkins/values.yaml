@@ -323,7 +323,7 @@ Agent:
   PodName: default
 
 Persistence:
-  Enabled: false
+  Enabled: true
   ## A manually managed Persistent Volume and Claim
   ## Requires Persistence.Enabled: true
   ## If defined, PVC must be created manually before volume will be bound
@@ -335,7 +335,7 @@ Persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  # StorageClass: "-"
+  StorageClass: "test-storage-nfs"
   Annotations: {}
   AccessMode: ReadWriteOnce
   Size: 8Gi
