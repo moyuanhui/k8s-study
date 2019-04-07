@@ -11,8 +11,8 @@ image:
   pullPolicy: IfNotPresent
 
 nfs:
-  server:
-  path: /ifs/kubernetes
+  server: 111.231.204.119
+  path: /nfs-data
   mountOptions:
 
 # For creating the StorageClass automatically:
@@ -28,7 +28,7 @@ storageClass:
 
   # Set a StorageClass name
   # Ignored if storageClass.create is false
-  name: nfs-client
+  name: test-storage-nfs
 
   # Allow volume to be expanded dynamically
   allowVolumeExpansion: true
