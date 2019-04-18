@@ -35,7 +35,7 @@ yum clean all
 yum makecache
 
 # 安装k8s相关组件
-yum install -y kubelet-1.11.1 kubeadm-1.11.1 
+yum install -y kubernetes-cni-0.6.0 kubelet-1.11.1  kubeadm-1.11.1 
 
 # 设置开机启动
 systemctl enable kubelet;systemctl start kubelet
