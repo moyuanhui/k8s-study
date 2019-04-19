@@ -34,8 +34,11 @@ yum -y install epel-release
 yum clean all
 yum makecache
 
+# 安装依赖
+yum install -y cri-tools-1.11.0 socat-1.7.3.2 libnetfilter_conntrack-1.0.4
+
 # 安装k8s相关组件
-yum install -y kubernetes-cni-0.6.0 kubelet-1.11.1 kubeadm-1.11.1 
+yum install -y kubernetes-cni-0.6.0 kubeadm-1.11.1 kubelet-1.11.2 kubectl-1.11.2
 
 # 设置开机启动
 systemctl enable kubelet
