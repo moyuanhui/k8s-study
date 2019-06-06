@@ -1,0 +1,77 @@
+172.31.62.254 -  [30/Apr/2019:08:31:42 +0000] "PUT /basicdata/api/services/app/EmployeeManagement/Update HTTP/1.1" "{\"ouId\":1750,\"employeeCode\":\"00001\",\"employeeName\":\"薪资测试\",\"mobile\":\"\",\"deptId\":\"\",\"sex\":1,\"birthday\":\"1988-03-14T00:00:00\",\"remark\":\"111\",\"employeeTypes\":[{\"groupId\":0,\"employeeId\":0,\"employeeTypeid\":8,\"isDeleted\":false,\"id\":0}],\"employeeShops\":[],\"employeeStocks\":[],\"status\":1,\"id\":3602}" 172.31.62.5:8000 500 2087 "" "PostmanRuntime/7.11.0" "" 192.168.100.118:80 500  "application/json; charset=utf-8" 43.184 > 43.185
+
+
+172.31.62.254 -  [30/Apr/2019:08:31:42 +0000] "PUT /basicdata/api/services/app/EmployeeManagement/Update HTTP/1.1" 
+"{\"ouId\":1750,\"employeeCode\":\"00001\",\"employeeName\":\"薪资测试\",\"mobile\":\"\",\"deptId\":\"\",\"sex\":1,
+\"birthday\":\"1988-03-14T00:00:00\",\"remark\":\"111\",\"employeeTypes\":[{\"groupId\":0,\"employeeId\":0,
+\"employeeTypeid\":8,\"isDeleted\":false,\"id\":0}],\"employeeShops\":[],\"employeeStocks\":[],\"status\":1,\"id\":3602}" 
+172.31.62.5:8000 500 2087 ""
+ "PostmanRuntime/7.11.0" "" 192.168.100.118:80 500  "application/json; charset=utf-8" 43.184 > 43.185
+
+
+
+ filter {
+  if "server_ngx_access_log" in [tags] {
+    grok {
+      match => { "message" => "%{IPORHOST:client_ip} - %{USER:auth} \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version})?|-)\" (%{IPORHOST:domain}|%{URIHOST:domain}|-) %{NUMBER:response} %{NUMBER:bytes} %{QS:referrer} %{QS:agent} \"(%{WORD:x_forword}|-)\" (%{URIHOST:upstream_host}|-) (%{NUMBER:upstream_response}|-) (%{WORD:upstream_cache_status}|-) %{QS:upstream_content_type} (%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}" }
+ 
+      match => { "message" => "%{IPORHOST:upstream_host} - %{USER:auth} \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version})?|-)\" (%{IPORHOST:domain}|%{URIHOST:domain}|-) %{NUMBER:response} %{NUMBER:bytes} %{QS:referrer} %{QS:agent} \"%{IP:client_ip}\" (%{URIHOST:upstream_host}|-) (%{NUMBER:upstream_response}|-) (%{WORD:upstream_cache_status}|-) %{QS:upstream_content_type} (%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}" }
+ 
+      match => { "message" => "%{IPORHOST:client_ip} - (%{USER:auth}|-) \[%{HTTPDATE:timestamp}\] \"%{WORD:verb} %{NOTSPACE:request} HTTP/%{NUMBER:http_version}\" (%{IPORHOST:domain}|%{URIHOST:domain}|-) %{NUMBER:response} %{NUMBER:bytes} %{QS:referrer} %{QS:agent} \"(%{WORD:x_forword}|%{IPORHOST:x_forword}|-)\" (%{IPORHOST:upstream_host}|-)\:%{NUMBER:upstream_port} (%{NUMBER:upstream_response}|-) (%{WORD:upstream_cache_status}|-) \"%{NOTSPACE:upstream_content_type}; charset\=%{NOTSPACE:upstream_content_charset}\" (%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}" }
+ 
+      match => { "message" => "%{IPORHOST:client_ip} - (%{USER:auth}|-) \[%{HTTPDATE:timestamp}\] \"%{WORD:verb} %{NOTSPACE:request} HTTP/%{NUMBER:http_version}\" (%{IPORHOST:domain}|%{URIHOST:domain}|-) %{NUMBER:response} %{NUMBER:bytes} %{QS:referrer} %{QS:agent} \"(%{WORD:x_forword}|%{IPORHOST:x_forword}|-)\" (%{IPORHOST:upstream_host}|-)\:%{NUMBER:upstream_port} (%{NUMBER:upstream_response}|-) (%{WORD:upstream_cache_status}|-) \"%{NOTSPACE:upstream_content_type};charset\=%{NOTSPACE:upstream_content_charset}\" (%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}" }
+ 
+      match => { "message" => "%{IPORHOST:client_ip} - %{USER:auth} \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version})?|-)\" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}" }
+ 
+      match => { "message" => "%{IPORHOST:client_ip} - %{USER:auth} \[%{HTTPDATE:timestamp}\] \"(%{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version})?|-)\" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}" }
+ 
+      match => { "message" => "%{IPORHOST:client_ip} - %{USER:auth} \[%{HTTPDATE:timestamp}\] \"((%{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version})?|-)|)\" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}" }
+ 
+      match => { "message" => "%{IPORHOST:client_ip} - %{USER:auth} \[%{HTTPDATE:timestamp}\] %{QS:request} %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}" }
+ 
+    }
+ 
+    geoip {
+      source => "client_ip"
+    }
+ 
+    date {
+      match => [ "timestamp" , "dd/MMM/YYYY:HH:mm:ss Z" ]
+    }
+ 
+    useragent {
+      source => "agent"
+      target => "ua"
+    }
+ 
+  }
+}
+
+%{IPORHOST:client_ip}\s+-\s+\[%{HTTPDATE:request_time}\]\s+\"(?:%{WORD:method_type} %{NOTSPACE:request_path}(?: HTTP/%{NUMBER:http_version})?|-)\"
+
+172.31.62.254 -  [30/Apr/2019:08:31:42 +0000] "PUT /basicdata/api/services/app/EmployeeManagement/Update HTTP/1.1" 172.31.62.5:8000 500 2087 "" "PostmanRuntime/7.11.0" "" 192.168.100.118:80 500  "application/json; charset=utf-8" 43.184 > 43.185
+
+
+%{IPORHOST:client_ip}\s+-\s+\[%{HTTPDATE:request_time}\]\s+\"(?:%{WORD:method_type}\s+%{NOTSPACE:request_path}(?: HTTP/%{NUMBER:http_version})?|-)\"\s+(%{HOSTPORT:host_name}|%{IPORHOST:host_name}|%{URIHOST:host_name})\s+%{NUMBER:response_status}\s+%{NUMBER:response_bytes}
+
+172.31.62.254 -  [30/Apr/2019:08:31:42 +0000] "PUT /basicdata/api/services/app/EmployeeManagement/Update HTTP/1.1" apigateway.hk.com 500 2087 "PostmanRuntime/7.11.0" "" 192.168.100.118:80 500  "application/json; charset=utf-8" 43.184 > 43.185
+
+%{IPORHOST:client_ip}\s+-\s+\[%{HTTPDATE:request_time}\]\s+\"(?:%{WORD:method_type}\s+%{NOTSPACE:request_path}(?: HTTP/%{NUMBER:http_version})?|-)\"\s+(%{HOSTPORT:host_name}|%{IPORHOST:host_name}|%{URIHOST:host_name})\s+%{NUMBER:response_status}\s+%{NUMBER:response_bytes}\s+%{QS:referrer_agent}\s+
+
+172.31.62.254 -  [30/Apr/2019:08:31:42 +0000] "PUT /basicdata/api/services/app/EmployeeManagement/Update HTTP/1.1" apigateway.hk.com 500 2087 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36" "" 192.168.100.118:80 500  "application/json; charset=utf-8" 43.184 > 43.185
+
+
+%{IPORHOST:client_ip}\s+-\s+\[%{HTTPDATE:request_time}\]\s+\"(?:%{WORD:method_type}\s+%{NOTSPACE:request_path}(?: HTTP/%{NUMBER:http_version})?|-)\"\s+(%{HOSTPORT:host_name}|%{IPORHOST:host_name}|%{URIHOST:host_name})\s+%{NUMBER:response_status}\s+%{NUMBER:response_bytes}\s+%{QS:agent}\s+\"(%{WORD:x_forword}|-|)\"\s+(%{URIHOST:upstream_host}|-) (%{NUMBER:upstream_response}|-)\s+%{QS:upstream_content_type} (%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}
+172.31.62.254 -  [30/Apr/2019:08:31:42 +0000] "PUT /basicdata/api/services/app/EmployeeManagement/Update HTTP/1.1" apigateway.hk.com 500 2087 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36" "-" 192.168.100.118:80 500  "application/json; charset=utf-8" 43.184 > 43.185
+
+
+172.31.62.254 - - [08/May/2019:05:16:36 +0000] "GET /basicdata/health/check HTTP/1.1" 172.31.62.5:8000 200 101 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36" "-" 192.168.100.118:80 200 - "application/json; charset=utf-8" 0.044 > 0.045
+%{IPORHOST:client_ip}\s+-\s+-\s+\[%{HTTPDATE:request_time}\]\s+\"(?:%{WORD:method_type}\s+%{NOTSPACE:request_path}(?: HTTP/%{NUMBER:http_version})?|-)\"\s+(%{HOSTPORT:host_name}|%{IPORHOST:host_name}|%{URIHOST:host_name})\s+%{NUMBER:response_status}\s+%{NUMBER:response_bytes}\s+%{QS:referrer}\s+%{QS:agent}\s+\"(%{WORD:x_forword}|%{IPORHOST:x_forword}|-)\"\s+(%{URIHOST:upstream_host}|-)\s+(%{NUMBER:upstream_response}|-)\s+-\s+%{QS:upstream_content_type}\s+(%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}
+
+
+
+
+
+正确
+%{IPORHOST:client_ip}\s+-\s+-\s+\[%{HTTPDATE:request_time}\]\s+\"(?:%{WORD:method_type}\s+%{NOTSPACE:request_path}(?: HTTP/%{NUMBER:http_version})?|-)\"\s+(%{HOSTPORT:host_name}|%{IPORHOST:host_name}|%{URIHOST:host_name})\s+%{NUMBER:response_status}\s+%{NUMBER:response_bytes}\s+%{QS:referrer}\s+%{QS:agent}\s+\"(%{WORD:x_forword}|%{IPORHOST:x_forword}|-)\"\s+(%{URIHOST:upstream_host}|-)\s+(%{NUMBER:upstream_response}|-)\s+-\s+%{QS:upstream_content_type}\s+(%{BASE16FLOAT:upstream_response_time}|-) > %{BASE16FLOAT:request_time}
+172.31.62.254 - - [08/May/2019:05:39:04 +0000] "POST /basicdata/api/services/app/Account/Register HTTP/1.1" 172.31.62.5:8000 500 1807 "-" "PostmanRuntime/7.11.0" "-" 192.168.100.118:80 500 - "application/json; charset=utf-8" 0.543 > 0.543
