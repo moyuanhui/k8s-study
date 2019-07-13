@@ -72,7 +72,7 @@ vm.swappiness=0
 EOF
 
 # less /proc/sys/net/ipv4/ip_forward
-# echo "1" > /proc/sys/net/ipv4/ip_forward
+echo "1" > /proc/sys/net/ipv4/ip_forward
 
 # 加载系统配置
 sysctl --system
