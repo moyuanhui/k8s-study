@@ -1,0 +1,128 @@
+[init] using Kubernetes version: v1.11.0
+[preflight] running pre-flight checks
+I0713 09:54:49.936591   14739 kernel_validator.go:81] Validating kernel version
+I0713 09:54:49.936691   14739 kernel_validator.go:96] Validating kernel config
+	[WARNING SystemVerification]: docker version is greater than the most recently validated version. Docker version: 18.06.0-ce. Max validated version: 17.03
+	[WARNING Hostname]: hostname "master" could not be reached
+	[WARNING Hostname]: hostname "master" lookup master on 100.88.222.14:53: no such host
+[preflight/images] Pulling images required for setting up a Kubernetes cluster
+[preflight/images] This might take a minute or two, depending on the speed of your internet connection
+[preflight/images] You can also perform this action in beforehand using 'kubeadm config images pull'
+[kubelet] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[preflight] Activating the kubelet service
+[certificates] Generated ca certificate and key.
+[certificates] Generated apiserver certificate and key.
+[certificates] apiserver serving cert is signed for DNS names [master kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 10.139.149.72]
+[certificates] Generated apiserver-kubelet-client certificate and key.
+[certificates] Generated sa key and public key.
+[certificates] Generated front-proxy-ca certificate and key.
+[certificates] Generated front-proxy-client certificate and key.
+[certificates] Generated etcd/ca certificate and key.
+[certificates] Generated etcd/server certificate and key.
+[certificates] etcd/server serving cert is signed for DNS names [master localhost] and IPs [127.0.0.1 ::1]
+[certificates] Generated etcd/peer certificate and key.
+[certificates] etcd/peer serving cert is signed for DNS names [master localhost] and IPs [10.139.149.72 127.0.0.1 ::1]
+[certificates] Generated etcd/healthcheck-client certificate and key.
+[certificates] Generated apiserver-etcd-client certificate and key.
+[certificates] valid certificates and keys now exist in "/etc/kubernetes/pki"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/admin.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/kubelet.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/controller-manager.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/scheduler.conf"
+[controlplane] wrote Static Pod manifest for component kube-apiserver to "/etc/kubernetes/manifests/kube-apiserver.yaml"
+[controlplane] wrote Static Pod manifest for component kube-controller-manager to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
+[controlplane] wrote Static Pod manifest for component kube-scheduler to "/etc/kubernetes/manifests/kube-scheduler.yaml"
+[etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
+[init] waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests" 
+[init] this might take a minute or longer if the control plane images have to be pulled
+[apiclient] All control plane components are healthy after 46.502641 seconds
+[uploadconfig] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config-1.11" in namespace kube-system with the configuration for the kubelets in the cluster
+[markmaster] Marking the node master as master by adding the label "node-role.kubernetes.io/master=''"
+[markmaster] Marking the node master as master by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[patchnode] Uploading the CRI Socket information "/var/run/dockershim.sock" to the Node API object "master" as an annotation
+[bootstraptoken] using token: 69r32z.ht8ftm7qvasu80al
+[bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstraptoken] creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes master has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join 10.139.149.72:6443 --token 69r32z.ht8ftm7qvasu80al --discovery-token-ca-cert-hash sha256:f91bdfee83a3d5411cf95c345a2d6a9b7ad0827c3af773acb091297662f00c51
+
+clusterrole.rbac.authorization.k8s.io/flannel created
+clusterrolebinding.rbac.authorization.k8s.io/flannel created
+serviceaccount/flannel created
+configmap/kube-flannel-cfg created
+daemonset.extensions/kube-flannel-ds created
+NAME      STATUS     ROLES     AGE       VERSION
+master    NotReady   master    7s        v1.11.2
+Loaded plugins: fastestmirror, langpacks
+Repository epel is listed more than once in the configuration
+Loading mirror speeds from cached hostfile
+Resolving Dependencies
+--> Running transaction check
+---> Package git.x86_64 0:1.8.3.1-20.el7 will be installed
+--> Processing Dependency: perl-Git = 1.8.3.1-20.el7 for package: git-1.8.3.1-20.el7.x86_64
+--> Processing Dependency: perl(Term::ReadKey) for package: git-1.8.3.1-20.el7.x86_64
+--> Processing Dependency: perl(Git) for package: git-1.8.3.1-20.el7.x86_64
+--> Processing Dependency: perl(Error) for package: git-1.8.3.1-20.el7.x86_64
+--> Running transaction check
+---> Package perl-Error.noarch 1:0.17020-2.el7 will be installed
+---> Package perl-Git.noarch 0:1.8.3.1-20.el7 will be installed
+---> Package perl-TermReadKey.x86_64 0:2.30-20.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================================================================================================================================================================
+ Package                                                    Arch                                             Version                                                    Repository                                         Size
+================================================================================================================================================================================================================================
+Installing:
+ git                                                        x86_64                                           1.8.3.1-20.el7                                             updates                                           4.4 M
+Installing for dependencies:
+ perl-Error                                                 noarch                                           1:0.17020-2.el7                                            os                                                 32 k
+ perl-Git                                                   noarch                                           1.8.3.1-20.el7                                             updates                                            55 k
+ perl-TermReadKey                                           x86_64                                           2.30-20.el7                                                os                                                 31 k
+
+Transaction Summary
+================================================================================================================================================================================================================================
+Install  1 Package (+3 Dependent packages)
+
+Total download size: 4.5 M
+Installed size: 22 M
+Downloading packages:
+(1/4): perl-Error-0.17020-2.el7.noarch.rpm                                                                                                                                                               |  32 kB  00:00:00     
+(2/4): perl-Git-1.8.3.1-20.el7.noarch.rpm                                                                                                                                                                |  55 kB  00:00:00     
+(3/4): perl-TermReadKey-2.30-20.el7.x86_64.rpm                                                                                                                                                           |  31 kB  00:00:00     
+(4/4): git-1.8.3.1-20.el7.x86_64.rpm                                                                                                                                                                     | 4.4 MB  00:00:01     
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                              
+
+
+
+cd /etc/kubernetes
+rm admin.conf
+./kubeadm991.13.4 init phase kubeconfig admin --config kubeadm.yaml
+cd ~/.kube
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
