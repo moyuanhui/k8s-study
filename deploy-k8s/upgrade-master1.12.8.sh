@@ -12,10 +12,10 @@ docker pull mirrorgooglecontainers/etcd:3.2.24
 docker pull  mirrorgooglecontainers/kube-controller-manager:v1.12.8
 docker pull  mirrorgooglecontainers/kube-apiserver:v1.12.8
 docker pull  mirrorgooglecontainers/kube-scheduler:v1.12.8
-docker pull mirrorgooglecontainers/kube-proxy:v1.12.8
 docker pull coredns/coredns:1.2.2
 docker pull mirrorgooglecontainers/kube-apiserver-amd64:v1.12.8 
 docker pull mirrorgooglecontainers/kube-scheduler-amd64:v1.12.8 
+docker pull mirrorgooglecontainers/kube-proxy:v1.12.8
 docker pull mirrorgooglecontainers/kube-proxy-amd64:v1.12.8
 
 # 重新打tag
@@ -23,10 +23,10 @@ docker tag mirrorgooglecontainers/etcd:3.2.24 k8s.gcr.io/etcd:3.2.24
 docker tag  mirrorgooglecontainers/kube-controller-manager:v1.12.8 k8s.gcr.io/kube-controller-manager:v1.12.8
 docker tag  mirrorgooglecontainers/kube-apiserver:v1.12.8 k8s.gcr.io/kube-apiserver:v1.12.8
 docker tag  mirrorgooglecontainers/kube-scheduler:v1.12.8 k8s.gcr.io/kube-scheduler:v1.12.8
-docker tag mirrorgooglecontainers/kube-proxy:v1.12.8 k8s.gcr.io/kube-proxy:v1.12.8
 docker tag coredns/coredns:1.2.2 k8s.gcr.io/coredns:1.2.2
 docker tag mirrorgooglecontainers/kube-apiserver-amd64:v1.12.8  k8s.gcr.io/kube-apiserver-amd64:v1.12.8 
 docker tag mirrorgooglecontainers/kube-scheduler-amd64:v1.12.8   k8s.gcr.io/kube-scheduler-amd64:v1.12.8 
+docker tag mirrorgooglecontainers/kube-proxy:v1.12.8 k8s.gcr.io/kube-proxy:v1.12.8
 docker tag mirrorgooglecontainers/kube-proxy-amd64:v1.12.8  k8s.gcr.io/kube-proxy-amd64:v1.12.8 
 
 
@@ -38,7 +38,7 @@ kubeadm upgrade apply v1.12.8
 kubeadm upgrade node config --kubelet-version v1.12.8
 
 # 重新加载daemon
-systemctl daemon-reload 
+systemctl daemon-reload && systemctl restart kubelet
 
 # 重启kubelet
-systemctl restart kubelet
+# systemctl restart kubelet

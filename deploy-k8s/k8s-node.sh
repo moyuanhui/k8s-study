@@ -71,14 +71,15 @@ net.bridge.bridge-nf-call-iptables = 1
 vm.swappiness=0
 EOF
 
-# less /proc/sys/net/ipv4/ip_forward
-echo "1" > /proc/sys/net/ipv4/ip_forward
+
 
 # 加载系统配置
 sysctl --system
 
+echo "1" > /proc/sys/net/ipv4/ip_forward
+
 # 安装nfs依赖
-yum install -y nfs-utils rpcbind
+# yum install -y nfs-utils rpcbind
 
 # 设置nfs开机启动
 systemctl enable nfs;systemctl enable rpcbind;
