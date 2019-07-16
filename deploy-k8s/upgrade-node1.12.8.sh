@@ -16,7 +16,14 @@ docker pull coredns/coredns:1.2.2
 docker pull mirrorgooglecontainers/kube-proxy:v1.12.8
 docker pull mirrorgooglecontainers/kube-proxy-amd64:v1.12.8
 
-# 重新打tag
+docker pull hub.hengkangit.com:6337/hk_docker/kube-proxy:v1.12.8
+docker tag hub.hengkangit.com:6337/hk_docker/kube-proxy:v1.12.8 k8s.gcr.io/kube-proxy:v1.12.8
+
+docker pull hub.hengkangit.com:6337/hk_docker/coredns:1.2.2
+docker tag hub.hengkangit.com:6337/hk_docker/coredns:1.2.2 k8s.gcr.io/coredns:1.2.2
+
+
+
 docker tag mirrorgooglecontainers/kube-proxy:v1.12.8 k8s.gcr.io/kube-proxy:v1.12.8
 docker tag mirrorgooglecontainers/kube-proxy-amd64:v1.12.8  k8s.gcr.io/kube-proxy-amd64:v1.12.8 
 docker tag coredns/coredns:1.2.2 k8s.gcr.io/coredns:1.2.2
