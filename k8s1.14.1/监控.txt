@@ -1,0 +1,14 @@
+helm install \
+        --name monitor \
+        --namespace monitoring \
+        -f prom-settings.yaml \
+        -f prom-alertsmanager.yaml \
+        -f prom-alertrules.yaml \
+        prometheus
+
+
+helm install \
+  --name grafana \
+  --namespace monitoring \
+  -f grafana-settings.yaml \
+  grafana
