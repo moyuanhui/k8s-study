@@ -5,7 +5,7 @@
 # Date: 2019-07-13
 
 # 升级kubeadm kubelet kubectl 到指定版本
-yum upgrade -y kubeadm-1.12.8-0 kubelet-1.12.8-0  kubectl-1.12.8-0  --disableexcludes=kubernetes
+yum install -y kubeadm-1.12.8-0 kubelet-1.12.8-0  kubectl-1.12.8-0  --disableexcludes=kubernetes
 
 # 拉取镜像
 docker pull mirrorgooglecontainers/etcd:3.2.24
@@ -18,8 +18,7 @@ docker pull mirrorgooglecontainers/kube-scheduler-amd64:v1.12.8
 docker pull mirrorgooglecontainers/kube-proxy:v1.12.8
 docker pull mirrorgooglecontainers/kube-proxy-amd64:v1.12.8
 
-# 重新打tag
-docker tag mirrorgooglecontainers/etcd:3.2.24 k8s.gcr.io/etcd:3.2.24
+ooglecontainers/etcd:3.2.24 k8s.gcr.io/etcd:3.2.24
 docker tag  mirrorgooglecontainers/kube-controller-manager:v1.12.8 k8s.gcr.io/kube-controller-manager:v1.12.8
 docker tag  mirrorgooglecontainers/kube-apiserver:v1.12.8 k8s.gcr.io/kube-apiserver:v1.12.8
 docker tag  mirrorgooglecontainers/kube-scheduler:v1.12.8 k8s.gcr.io/kube-scheduler:v1.12.8

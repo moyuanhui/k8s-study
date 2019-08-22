@@ -50,4 +50,8 @@ node-exporter kube-state-metrics grafana, 用operator实现
 # helm 
 $ wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.9.1-linux-amd64.tar.gz | tar -zx
 $ sudo mv linux-amd64/helm /usr/local/bin/
+$ kubectl -n kube-system create sa tiller
+$ kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+$ helm init --service-account tiller
 
+$ kubectl -n kube-system patch deploy  tiller-deploy -p '{"spec":{"template":{"spec":{"containers":[{"name":"tiller","image":"moyuanhui/gcr.io.kubernetes-helm.tiller:v2.9.1"}]}}}}'

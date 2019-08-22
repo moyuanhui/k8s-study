@@ -24,7 +24,6 @@ docker tag hub.hengkangit.com:6337/hk_docker/coredns:1.2.2 k8s.gcr.io/coredns:1.
 
 
 
-docker tag mirrorgooglecontainers/kube-proxy:v1.12.8 k8s.gcr.io/kube-proxy:v1.12.8
 docker tag mirrorgooglecontainers/kube-proxy-amd64:v1.12.8  k8s.gcr.io/kube-proxy-amd64:v1.12.8 
 docker tag coredns/coredns:1.2.2 k8s.gcr.io/coredns:1.2.2
 
@@ -33,15 +32,15 @@ docker tag coredns/coredns:1.2.2 k8s.gcr.io/coredns:1.2.2
 # kubeadm upgrade node config --kubelet-version v1.12.8
 
 # # 重新加载daemon
-# systemctl daemon-reload 
+# systemctl daemon-reload  && systemctl restart kubelet
 
 # # 重启kubelet
-# systemctl restart kubelet
+# 
 
 cd /etc/kubernetes
 rm admin.conf
 ./kubeadm991.13.4 init phase kubeconfig admin --config kubeadm.yaml
 cd ~/.kube
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
